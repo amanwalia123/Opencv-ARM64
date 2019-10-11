@@ -2,6 +2,7 @@
 
 curr_dir=$(pwd)
 logfile=$curr_dir/log
+num_proc=4
 
 ############################# Preparing Environment #########################################
 
@@ -77,7 +78,7 @@ mv opencv_contrib-3.4.1 OpenCV/
 echo "[Info] Compiling xVid"
 cd /opt/ATLAS/xvidcore/build/generic/
 ./configure --prefix=${ARMPREFIX} --host=aarch64-linux-gnu --disable-assembly >> $logfile 2>&1
-make -j8  >> $logfile 2>&1
+make -j$num_proc  >> $logfile 2>&1
 make install  >> $logfile 2>&1
 #*******************************************************************************************
 
@@ -92,7 +93,7 @@ fi
 cd /opt/ATLAS/v4l-utils/
 ./bootstrap.sh >> $logfile 2>&1
 ./configure --prefix=$ARMPREFIX --host=aarch64-linux-gnu --without-jpeg --with-udevdir=$ARMPREFIX/lib/udev >> $logfile 2>&1
-make -j8 >> $logfile 2>&1
+make -j$num_proc >> $logfile 2>&1
 make install >> $logfile 2>&1
 #*******************************************************************************************
 
@@ -105,7 +106,7 @@ if [[ -f "$FILE" ]]; then
 fi
 cd /opt/ATLAS/FFMPEG/
 bash configure.sh  >> $logfile 2>&1
-make -j8  >> $logfile 2>&1
+make -j$num_proc  >> $logfile 2>&1
 make install >> $logfile 2>&1
 #*******************************************************************************************
 
@@ -154,7 +155,7 @@ cmake -D CMAKE_C_COMPILER=/usr/bin/aarch64-linux-gnu-gcc \
 	-D CMAKE_INSTALL_PREFIX=${ARMPREFIX} \
 	-D CMAKE_MAKE_PROGRAM=/usr/bin/make \
 	-D CMAKE_TOOLCHAIN_FILE=../platforms/linux/aarch64-gnu.toolchain.cmake .. >> $logfile 2>&1
-make -j8  >> $logfile 2>&1
+make -j$num_proc  >> $logfile 2>&1
 make install >> $logfile 2>&1
 #*******************************************************************************************
 
