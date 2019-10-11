@@ -161,7 +161,7 @@ make install >> $logfile 2>&1
 
 ############################# TAR Packaging  #########################################
 echo "[Info] Installation complete, packaging files"
-cp -rf /usr/aarch64-linux-gnu/opencv ./
+cp -rf /usr/aarch64-linux-gnu/opencv /opt/
 tar -czvf $curr_dir/opencv.tar.gz opencv >> $logfile 2>&1
 echo "[Info] Success!!"
 
