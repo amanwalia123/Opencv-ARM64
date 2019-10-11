@@ -19,7 +19,7 @@ mkdir /opt/ATLAS
 
 #*************************Configure Environment variables***********************************
 echo "[Info] Setting Environment variables"
-echo "export ARMPREFIX=/usr/aarch64-linux-gnu" >> /etc/environment  
+echo "export ARMPREFIX=/usr/aarch64-linux-gnu/opencv" >> /etc/environment  
 echo "export PKG_CONFIG_PATH=\$ARMPREFIX/lib/pkgconfig:\$PKG_CONFIG_PATH" >> /etc/environment
 echo "export PKG_CONFIG_LIBDIR=\$ARMPREFIX/lib:\$PKG_CONFIG_LIBDIR" >> /etc/environment
 echo "export CCPREFIX=aarch64-linux-gnu-" >> /etc/environment
@@ -109,6 +109,23 @@ make -j8  >> $logfile 2>&1
 make install >> $logfile 2>&1
 #*******************************************************************************************
 
+
+############################################################################################
+# This is to fix the problem of opencv make not recognizing v4l header files. Apparantly cmake
+# looks into only /usr/aarch64-linux-gnu folder for includes, and if it can't find it there,
+# then it gives error while running make. To fix it, we will copy all the install files in  
+# custom install folder to /usr/aarch64-linux-gnu folder so that there are no errors regarding
+# missing libs or include files.
+############################################################################################
+cp -rf $ARMPREFIX/bin/* /usr/aarch64-linux-gnu/bin/*
+cp -rf $ARMPREFIX/include/* /usr/aarch64-linux-gnu/include/
+cp -rf $ARMPREFIX/lib/* /usr/aarch64-linux-gnu/lib/
+cp -rf $ARMPREFIX/sbin /usr/aarch64-linux-gnu/
+cp -rf $ARMPREFIX/etc /usr/aarch64-linux-gnu/
+############################################################################################
+
+
+
 #*********************** OpenCV **************************************************************
 echo "[Info] Compiling OpenCV"
 mkdir /opt/ATLAS/OpenCV/build
@@ -143,8 +160,7 @@ make install >> $logfile 2>&1
 
 ############################# TAR Packaging  #########################################
 echo "[Info] Installation complete, packaging files"
-mkdir install
-cp /usr/aarch64-linux-gnu/* install/
-tar -czvf $curr_dir/install.tar.gz install >> $logfile 2>&1
+cp -rf /usr/aarch64-linux-gnu/opencv ./
+tar -czvf $curr_dir/opencv.tar.gz opencv >> $logfile 2>&1
 echo "[Info] Success!!"
 
