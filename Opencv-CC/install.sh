@@ -117,7 +117,7 @@ make install >> $logfile 2>&1
 # custom install folder to /usr/aarch64-linux-gnu folder so that there are no errors regarding
 # missing libs or include files.
 ############################################################################################
-cp -rf $ARMPREFIX/bin/* /usr/aarch64-linux-gnu/bin/*
+cp -rf $ARMPREFIX/bin/* /usr/aarch64-linux-gnu/bin/
 cp -rf $ARMPREFIX/include/* /usr/aarch64-linux-gnu/include/
 cp -rf $ARMPREFIX/lib/* /usr/aarch64-linux-gnu/lib/
 cp -rf $ARMPREFIX/sbin /usr/aarch64-linux-gnu/
